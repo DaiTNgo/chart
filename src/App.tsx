@@ -5,6 +5,7 @@ import { Bar } from "@nivo/bar";
 import Chart from "./Chart";
 import { useMemo } from "react";
 import Score from "./Score";
+import Growth from "./Growth";
 
 function App() {
   const data = useMemo(
@@ -120,7 +121,6 @@ function App() {
       }),
     []
   );
-  console.log(data);
   return (
     <div
       className="App"
@@ -146,7 +146,8 @@ function App() {
       {/*  voluptas. Magni molestiae odio repellat saepe.*/}
       {/*</p>*/}
 
-      <Score />
+      {/*<Score />*/}
+      <Growth />
     </div>
   );
 }
