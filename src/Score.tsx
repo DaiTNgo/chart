@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ChartLayout from "./ChartLayout";
+import ChartLayout from "./components/ChartLayout/ChartLayout";
 import { calcLeft, calcX, calcY } from "./helper";
 const _data = {
   domainScores: [
