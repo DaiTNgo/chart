@@ -1,6 +1,10 @@
 import Growth from "./components/GrowthChart";
-import { dataDomainProficiencyGrowthAll } from "./data";
+import {
+  dataDomainProficiencyGrowthAll,
+  dataDomainProficiencyTestScore,
+} from "./data";
 import GroupStackChart from "./components/GroupStackChart";
+import Chart from "./Chart";
 
 function App() {
   return (

@@ -3,7 +3,7 @@ import * as S from "./styled";
 
 type Props = {
   children: React.ReactNode;
-  renderLabel: () => JSX.Element[];
+  renderLabel?: () => JSX.Element[];
   strokeWidth: number;
   width: number | undefined;
   // type of chart
