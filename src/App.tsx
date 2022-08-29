@@ -27,31 +27,27 @@ function App() {
       {/* stack group */}
       <GroupStackChart
         data={aGrowth}
-        lengthGroup={lengthGroup}
-        lengthStack={aGrowth[0].classesScores[0].domainScores.length}
-        lengthBar={lengthBar}
+        numOfGroup={lengthGroup}
+        numOfStack={aGrowth[0].classesScores[0].domainScores.length}
+        numOfBar={lengthBar}
+        startSpacing={50}
+        spacingBetweenChart={20}
+        widthBar={40}
       />
       {/*stack*/}
-      <GroupStackChart
-        data={[aTestScore]}
-        lengthGroup={1}
-        lengthStack={aTestScore.classesScores[0].domainScores.length}
-        lengthBar={aTestScore.classesScores.length}
-      />
+      {/*<GroupStackChart*/}
+      {/*  data={[aTestScore]}*/}
+      {/*  numOfGroup={1}*/}
+      {/*  numOfStack={aTestScore.classesScores[0].domainScores.length}*/}
+      {/*  numOfBar={aTestScore.classesScores.length}*/}
+      {/*/>*/}
       {/*bar*/}
-      <GroupStackChart
-        data={[_data3]}
-        lengthGroup={1}
-        lengthStack={1}
-        lengthBar={_data3.studentScores.length}
-      />
-
-      <GroupStackChart
-        data={[aTestScore]}
-        lengthGroup={1}
-        lengthStack={aTestScore.classesScores[0].domainScores.length}
-        lengthBar={aTestScore.classesScores.length}
-      />
+      {/*<GroupStackChart*/}
+      {/*  data={[_data3]}*/}
+      {/*  numOfGroup={1}*/}
+      {/*  numOfStack={1}*/}
+      {/*  numOfBar={_data3.studentScores.length}*/}
+      {/*/>*/}
     </div>
   );
 }
