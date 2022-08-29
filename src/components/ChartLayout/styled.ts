@@ -62,24 +62,27 @@ const ChartWrapper = styled.div`
 `;
 
 const ChartContainer = styled.div`
+  --left-chart-width: 50px;
+
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 50px);
-
+  padding: 0 50px;
+  .chart-left {
+    width: var(--left-chart-width);
+    .chart-title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      margin: 0;
+      color: #7a8186;
+      font-size: 13.5pt;
+    }
+  }
   .chart-right {
-    width: 90%;
+    width: calc(100% - var(--left-chart-width));
     height: 500px;
     display: flex;
-  }
-
-  .chart-left {
-    width: 10%;
-  }
-  .chart-left h1 {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    margin: 0;
   }
   .chart-score {
     width: 50px;

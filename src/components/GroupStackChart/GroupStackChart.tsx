@@ -7,8 +7,14 @@ import {
   DomainScoreType,
   TestScoreResponseType,
 } from "./types";
-
-function Growth() {
+import styled from "styled-components";
+type Props = {
+  data: any[];
+  lengthGroup?: number;
+  lengthBar?: number; // pass
+  lengthStack?: number; // pass
+};
+function Growth(props: Props) {
   const renderBarTestScore = (_arr: DomainScoreType[], _barIndex: number) => {
     let y = 320;
     console.log("-> y", y);
@@ -132,9 +138,9 @@ function Growth() {
     );
   };
   //-----------------------
-  const $lengthGroup = 20;
-  const $lengthBar = 4;
-  const $lengthStack = 8;
+  const $lengthGroup = props.lengthGroup || 1; // pass
+  const $lengthStack = props.lengthStack || 1; // pass
+  const $lengthBar = props.lengthBar || 1; // pass
   let widthXAxis = 0;
   const _startSpacing = 50;
   const _spacing = 20;
@@ -151,11 +157,69 @@ function Growth() {
       _spacing * ($lengthBar - 1) +
       _widthBar * ($lengthBar - 1);
   }
-  const testRender = () => {
-    console.log("=> :::: widthXAxis ::::", widthXAxis);
 
+  const testRender = (_data: any[]) => {
     const arr = [];
+    /**
+
+    if ($lengthGroup > 1) {
+      props.data.map((groupItem, groupIdx) => {
+        // @ts-ignore
+        groupItem.classesScores.map((barItem, barIdx) => {
+          let x = 0;
+
+          x =
+            _startSpacing +
+            _spacing * groupIdx +
+            _widthBar * barIdx +
+            _widthBar * groupIdx * $lengthBar;
+
+          let y = 320;
+          // @ts-ignore
+          barItem.domainScores.map((stackItem, stackIdx) => {
+            // @ts-ignore
+            stackItem.map((item, idx) => {
+              let height = item.percentageScore;
+              height = (height * 300) / (100 * $lengthStack);
+              y -= height; //   y -= _domainScore.percentageScore;
+
+              return (
+                <rect
+                  width={_widthBar} // default
+                  strokeWidth="1.25" // default
+                  x={x}
+                  y={y} // subtract height of first stack => props
+                  height={height} // height of first stack => props
+                  stroke={"blue"} // => props
+                  fill={"gray"} // => props
+                  onClick={() => {
+                    console.log("click blue");
+                  }}
+                />
+              );
+            });
+          });
+        });
+      });
+    } else if ($lengthBar >= 1 && $lengthStack >= 1) {
+      props.data.map((barItem, barIdx) => {
+        // @ts-ignore
+        barItem.map((stackItem, stackIdx) => {});
+      });
+    } else {
+      props.data.map((stackItem, stackIdx) => {});
+    }
+     *
+     */
     for (let groupIdx = 0; groupIdx < $lengthGroup; groupIdx++) {
+      //ClassScoreType[]
+      let groupItem = [];
+      if ($lengthStack > 1) {
+        groupItem = props.data[groupIdx].classesScores;
+      } else {
+        groupItem = props.data[groupIdx].studentScores;
+      }
+      console.log("-> groupItem", groupItem);
       for (let barIdx = 0; barIdx < $lengthBar; barIdx++) {
         let x = 0;
 
@@ -170,41 +234,97 @@ function Growth() {
         }
 
         let y = 320;
-
+        const barItem = groupItem[barIdx].domainScores;
+        console.log("-> barItem", barItem);
         for (let stackIdx = 0; stackIdx < $lengthStack; stackIdx++) {
-          let height = Math.floor(Math.random() * 100);
+          let height = barItem[stackIdx].percentageScore;
           height = (height * 300) / (100 * $lengthStack);
           y -= height; //   y -= _domainScore.percentageScore;
-          // console.log("=> :::: x,y ::::", { x, y });
+
           arr.push(
-            <rect
-              width={_widthBar} // default
-              strokeWidth="1.25" // default
-              x={x}
-              y={y} // subtract height of first stack => props
-              height={height} // height of first stack => props
-              stroke={"blue"} // => props
-              fill={"gray"} // => props
-              onClick={() => {
-                console.log("click blue");
-              }}
-            />
+            <>
+              <rect
+                width={_widthBar} // default
+                strokeWidth="1.25" // default
+                x={x}
+                y={y} // subtract height of first stack => props
+                height={height} // height of first stack => props
+                stroke={"blue"} // => props
+                fill={"gray"} // => props
+                onClick={() => {
+                  console.log("click blue");
+                }}
+              />
+            </>
           );
         }
+
+        // arr.push(
+        //   <ArrowUpGrowth
+        //     x={550}
+        //     y={100}
+        //     text={"-79%"}
+        //     handleClick={() => {
+        //       console.log("hello sasasa");
+        //     }}
+        //   />
+        // );
+        //
+        // arr.push(
+        //   <ArrowDownGrowth
+        //     x={350}
+        //     y={0}
+        //     text={"-100%"}
+        //     handleClick={() => {
+        //       console.log("hello ");
+        //     }}
+        //   />
+        // );
       }
     }
     return arr;
   };
+  const renderLabelGroup = (_data: TestScoreResponseType[]) => {
+    return _data.map((item, index) => {
+      return (
+        <Span
+          style={{
+            left: 50 + index * 40,
+          }}
+        >
+          {item.label}
+        </Span>
+      );
+    });
+  };
+
+  const renderLabelChart = (_data: ClassScoreType[]) => {
+    return _data.map((item, index) => {
+      return (
+        <P
+          key={item.classId}
+          style={{
+            left: 50 + 180 * index,
+            transform: "translateY(40px) rotate(-45deg)",
+          }}
+        >
+          {item.className}
+        </P>
+      );
+    });
+  };
   return (
     <ChartLayout
-      isStack={numOfStacks > 1}
-      width={widthXAxis}
+      widthChart={widthXAxis}
       strokeWidth={2}
       numOfStack={$lengthStack}
+      renderLabelGroup={() => renderLabelGroup(aGrowth)}
+      renderLabelChart={() => renderLabelChart(aGrowth[0].classesScores)}
+      title={"Domain Scores"}
     >
       {/*{renderChartBarTestScore(newClassesScoresTestScore)}*/}
       {/*{renderChartGrowth(aGrowth)}*/}
-      {testRender()}
+      {testRender(props.data)}
     </ChartLayout>
   );
 }
@@ -282,7 +402,7 @@ type PropsBarChart = {
   numOfStack: number;
   data: any[];
 };
-function BarChart(props: PropsBarChart) {}
+// function BarChart(props: PropsBarChart) {}
 
 type PropsGroupBarChart = {
   strokeWidthXAxis: number;
@@ -347,3 +467,101 @@ function GroupBarChart(props: PropsGroupBarChart) {}
  *
  *
  */
+function BarChart(props: {
+  data: any[];
+  groupIdx: number;
+  isStack: boolean;
+  barIdx: number;
+}) {
+  const $lengthGroup = 20;
+  const $lengthBar = 4;
+  const $lengthStack = 8;
+  let widthXAxis = 0;
+  const _startSpacing = 50;
+  const _spacing = 20;
+  const _widthBar = 40;
+  props.data.map((item, barIdx) => {
+    let x = 0;
+    if ($lengthGroup > 1) {
+      x =
+        _startSpacing +
+        _spacing * props.groupIdx +
+        _widthBar * barIdx +
+        _widthBar * props.groupIdx * props.data.length;
+    } else {
+      x = _startSpacing + _spacing * barIdx + _widthBar * barIdx;
+    }
+    const $lengthStack = item.domainScores.length || 1;
+  });
+  const arr = [];
+  for (let barIdx = 0; barIdx < props.data.length; barIdx++) {
+    let y = 320;
+    for (let stackIdx = 0; stackIdx < $lengthStack; stackIdx++) {
+      let height = Math.floor(Math.random() * 100);
+      height = (height * 300) / (100 * $lengthStack);
+      y -= height; //   y -= _domainScore.percentageScore;
+      let x = 0;
+      if ($lengthGroup > 1) {
+        x =
+          _startSpacing +
+          _spacing * props.groupIdx +
+          _widthBar * barIdx +
+          _widthBar * props.groupIdx * props.data.length;
+      } else {
+        x = _startSpacing + _spacing * barIdx + _widthBar * barIdx;
+      }
+      arr.push(
+        <>
+          <rect
+            width={_widthBar} // default
+            strokeWidth="1.25" // default
+            x={x}
+            y={y} // subtract height of first stack => props
+            height={height} // height of first stack => props
+            stroke={"blue"} // => props
+            fill={"gray"} // => props
+            onClick={() => {
+              console.log("click blue");
+            }}
+          />
+        </>
+      );
+    }
+
+    arr.push(
+      <ArrowUpGrowth
+        x={550}
+        y={100}
+        text={"-79%"}
+        handleClick={() => {
+          console.log("hello sasasa");
+        }}
+      />
+    );
+
+    arr.push(
+      <ArrowDownGrowth
+        x={350}
+        y={0}
+        text={"-100%"}
+        handleClick={() => {
+          console.log("hello ");
+        }}
+      />
+    );
+  }
+  return arr;
+}
+const P = styled.p`
+  position: absolute;
+  top: 100%;
+  width: calc(40px * 4);
+  text-align: center;
+`;
+
+const Span = styled.span`
+  font-size: 15px;
+  position: absolute;
+  top: 100%;
+  width: 40px;
+`;

@@ -1,4 +1,5 @@
 export type TestScoreResponseType = {
+  label?: string;
   assessmentId: number;
   classesScores: ClassScoreType[];
 };
