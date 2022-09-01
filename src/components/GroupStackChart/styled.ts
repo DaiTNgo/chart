@@ -1,6 +1,5 @@
 import styled from "styled-components";
-
-export const ReportLabel = styled.div<{ index: number }>`
+const ReportLabel = styled.div<{ index: number }>`
   position: absolute;
   // 180 distance between each label + 130 start;
   left: ${(props) => props.index * 180 + 130}px;
@@ -12,3 +11,23 @@ export const ReportLabel = styled.div<{ index: number }>`
   text-align: center;
   display: inline-block;
 `;
+
+const LabelGroup = styled.p`
+  position: absolute;
+  top: 100%;
+
+  width: 40px;
+  text-align: center;
+  transform: translateY(40px) rotate(-45deg);
+`;
+
+const LabelBar = styled.span`
+  position: absolute;
+
+  font-size: 15px;
+  top: 100%;
+  width: 40px;
+  text-align: center;
+`;
+
+export { ReportLabel, LabelBar, LabelGroup };

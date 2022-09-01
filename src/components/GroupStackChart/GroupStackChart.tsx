@@ -1,42 +1,65 @@
-import React from "react";
+import React, { FunctionComponent, useState } from "react";
 import ChartLayout from "../ChartLayout";
-import styled from "styled-components";
+import { StyledComponent } from "styled-components";
 import { uniqueId } from "lodash";
+import { TData } from "./types";
+import * as S from "./styled";
 
 type Props = {
-  data: any[];
-  startSpacing: number;
-  spacingBetweenChart: number;
-  widthBar: number;
+  data: TData[];
+  startSpacing?: number;
+  spacingBetweenChart?: number;
+  widthBar?: number;
   title?: string;
   strokeWidth?: number;
-  isShowGrowth: boolean;
+  isShowGrowth?: boolean;
+  componentLabelBar?: StyledComponent<any, any>;
+  componentLabelGroup?: StyledComponent<any, any>;
 };
 function GroupStackChart({
   title = "DEFAULT TITLE",
-  spacingBetweenChart = 30,
-  startSpacing = 100,
+  spacingBetweenChart = 50,
+  startSpacing = 60,
   strokeWidth = 2,
-  widthBar = 60,
-  isShowGrowth = true,
-  ...props
-}: Partial<Props>) {
-  const calcWidthAxis = (_numOfGroup: number, _numOfBar: number) => {
+  widthBar = 40,
+  isShowGrowth = false,
+  data,
+  componentLabelBar: ComponentBar,
+  componentLabelGroup: ComponentGroup,
+}: Props) {
+  const labelGroup: any[] = [];
+  const labelBar: any[] = [];
+
+  const getNumOfValue = (_data: TData[]) => {
+    const numOfGroup: number = _data.length;
+    const numOfBar: number = _data[0].value.length;
+    const numOfStack: number = _data[0].value[0].value.length;
+
+    return {
+      numOfGroup,
+      numOfBar,
+      numOfStack,
+    };
+  };
+  const { numOfStack, numOfGroup, numOfBar } = getNumOfValue(data);
+
+  const calcWidthXAxis = () => {
     let widthXAxis = 0;
-    if (_numOfGroup > 1) {
+    if (numOfGroup > 1) {
       widthXAxis =
         startSpacing +
-        spacingBetweenChart * (_numOfGroup - 1) +
-        widthBar * _numOfBar +
-        widthBar * (_numOfGroup - 1) * _numOfBar;
+        spacingBetweenChart * (numOfGroup - 1) +
+        widthBar * numOfBar +
+        widthBar * (numOfGroup - 1) * numOfBar;
     } else {
       widthXAxis =
         startSpacing +
-        spacingBetweenChart * (_numOfBar - 1) +
-        widthBar * (_numOfBar - 1);
+        spacingBetweenChart * (numOfBar - 1) +
+        widthBar * (numOfBar - 1);
     }
     return widthXAxis;
   };
+  const widthXAxis = calcWidthXAxis();
 
   const calcX = (_groupIdx: number, _barIdx: number) => {
     let x = 0;
@@ -54,66 +77,79 @@ function GroupStackChart({
     return x;
   };
 
-  let widthXAxis = 0;
-
-  const handleClick = () => {
-    console.log("=> :::: Clicked ::::");
-  };
-
   const getLabelBar = (_width: number, _text: string, _left: number) => {
     return (
-      <Span
+      <S.LabelBar
         key={uniqueId(`${_width + _left + _text}`)}
+        as={ComponentBar}
         style={{
           left: _left,
           width: _width,
-          textAlign: "center",
         }}
       >
         {_text}
-      </Span>
+      </S.LabelBar>
     );
   };
 
   const getLabelGroup = (_width: number, _text: string, _left: number) => {
     return (
-      <P
+      <S.LabelGroup
         key={uniqueId(`${_width + _left + _text}`)}
+        as={ComponentGroup}
         style={{
           left: _left,
-          transform: "translateY(40px) rotate(-45deg)",
           width: _width,
         }}
       >
         {_text}
-      </P>
+      </S.LabelGroup>
     );
   };
 
-  const labelGroup: any[] = [];
-  const labelBar: any[] = [];
+  const getArrow = (growth: number, yMin: number, groupIdx: number) => {
+    const HEIGHT_DEFAULT_SVG_ARROW = 80;
+    const x = calcX(groupIdx, 0) + (widthBar - HEIGHT_DEFAULT_SVG_ARROW / 2);
 
-  const rfRender = (_data: any[]) => {
+    if (growth > 0) {
+      return (
+        <ArrowUpGrowth
+          key={uniqueId(`${x}`)}
+          x={x}
+          y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
+          text={`${growth}%`}
+          handleClick={handleClick}
+        />
+      );
+    } else {
+      return (
+        <ArrowDownGrowth
+          key={uniqueId(`${x}`)}
+          x={x}
+          y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
+          text={`${growth}%`}
+          handleClick={handleClick}
+        />
+      );
+    }
+  };
+
+  const renderChart = (_data: TData[]) => {
     const arr: any[] = [];
-    const numOfGroup = _data.length;
 
     for (let groupIdx = 0; groupIdx < numOfGroup; groupIdx++) {
-      const groupItem = _data[groupIdx].data.value;
-      const groupLabel: string = _data[groupIdx].data.label;
+      const groupItem = _data[groupIdx].value;
+      const groupLabel: string = _data[groupIdx].label;
       const growth = _data[groupIdx].growth;
-      const numOfBar = groupItem.length;
 
-      widthXAxis = calcWidthAxis(numOfGroup, numOfBar);
-
-      labelGroup.push(
-        getLabelGroup(
-          widthBar * numOfBar,
-          groupLabel,
-          startSpacing +
-            widthBar * numOfBar * groupIdx +
-            spacingBetweenChart * groupIdx
-        )
+      const labelItemGroup = getLabelGroup(
+        widthBar * numOfBar,
+        groupLabel,
+        startSpacing +
+          widthBar * numOfBar * groupIdx +
+          spacingBetweenChart * groupIdx
       );
+      labelGroup.push(labelItemGroup);
 
       let yMin = 99999999;
 
@@ -133,15 +169,16 @@ function GroupStackChart({
               widthBar * numOfBar * groupIdx
           )
         );
-        const numOfStack = barItem.length;
+
         for (let stackIdx = 0; stackIdx < numOfStack; stackIdx++) {
-          const stackItem = barItem[stackIdx].percentage;
-          const percentageScore = stackItem;
+          const stackItem = barItem[stackIdx];
+          const percentageScore = stackItem.percentage;
           const heightPx = percentageScore
             ? (percentageScore * 300) / (100 * numOfStack)
             : 10;
           y -= heightPx;
           yMin = Math.min(yMin, y);
+
           arr.push(
             <rect
               key={uniqueId(`${groupIdx + barIdx + stackIdx}`)}
@@ -150,181 +187,36 @@ function GroupStackChart({
               x={x}
               y={y}
               height={heightPx}
-              stroke={stackItem?.strokeColor || "gray"}
-              fill={stackItem?.fillColor || "yellow"}
+              stroke={stackItem.info?.strokeColor || "gray"}
+              fill={stackItem.info?.fillColor || "yellow"}
               onClick={handleClick}
             />
           );
         }
       }
 
-      const x = calcX(groupIdx, 0) + (widthBar - 40);
-      const HEIGHT_DEFAULT_SVG_ARROW = 80;
-
       if (isShowGrowth) {
-        if (growth > 0) {
-          arr.push(
-            <ArrowUpGrowth
-              key={uniqueId(`${x}`)}
-              x={x}
-              y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
-              text={`${growth}%`}
-              handleClick={handleClick}
-            />
-          );
-        } else {
-          arr.push(
-            <ArrowDownGrowth
-              key={uniqueId(`${x}`)}
-              x={x}
-              y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
-              text={`${growth}%`}
-              handleClick={handleClick}
-            />
-          );
-        }
+        const arrow = getArrow(growth, yMin, groupIdx);
+        arr.push(arrow);
       }
     }
     return arr;
   };
-  const data = [
-    {
-      data: {
-        label: "Label Of Group Dai Class",
-        value: [
-          {
-            value: [
-              {
-                percentage: 12,
-                info: {
-                  name: "hi",
-                },
-              },
-              {
-                percentage: 35,
-                info: {
-                  name: "hi",
-                },
-              },
-            ],
-            label: "MOY",
-          },
-          {
-            value: [
-              {
-                percentage: 56,
-                info: {
-                  name: "hi",
-                },
-              },
-              {
-                percentage: 29,
-                info: {
-                  name: "hi",
-                },
-              },
-            ],
-            label: "EOY",
-          },
-        ],
-      },
-      growth: 12,
-    },
-    {
-      data: {
-        label: "Label Of Group Tinh",
-        value: [
-          {
-            value: [
-              {
-                percentage: 98,
-                info: {
-                  name: "hi",
-                },
-              },
-              {
-                percentage: 20,
-                info: {
-                  name: "hi",
-                },
-              },
-            ],
-            label: "Bar",
-          },
-          {
-            value: [
-              {
-                percentage: 10,
-                info: {
-                  name: "hi",
-                },
-              },
-              {
-                percentage: 40,
-                info: {
-                  name: "hi",
-                },
-              },
-            ],
-            label: "Bar",
-          },
-        ],
-      },
-      growth: -12,
-    },
-    {
-      data: {
-        label: "Label Of Group Tinh",
-        value: [
-          {
-            value: [
-              {
-                percentage: 98,
-                info: {
-                  name: "hi",
-                },
-              },
-              {
-                percentage: 20,
-                info: {
-                  name: "hi",
-                },
-              },
-            ],
-            label: "Bar",
-          },
-          {
-            value: [
-              {
-                percentage: 10,
-                info: {
-                  name: "hi",
-                },
-              },
-              {
-                percentage: 40,
-                info: {
-                  name: "hi",
-                },
-              },
-            ],
-            label: "Bar",
-          },
-        ],
-      },
-      growth: 30,
-    },
-  ]; // length chart
+
+  const handleClick = () => {
+    console.log("=> :::: Clicked ::::");
+  };
+
   return (
     <ChartLayout
       widthChart={widthXAxis}
       strokeOfXAxisChart={strokeWidth}
-      numOfStack={2}
-      renderLabelGroup={() => labelGroup}
-      renderLabelChart={() => labelBar}
+      numOfStack={numOfStack}
+      labelGroup={labelGroup}
+      labelBar={labelBar}
       title={title}
     >
-      {rfRender(data)}
+      {renderChart(data)}
     </ChartLayout>
   );
 }
@@ -394,27 +286,3 @@ function ArrowUpGrowth({
 }
 
 export default GroupStackChart;
-
-/**
- *                          .||
- *                     ||.  .||                 ||
- *   START_SPACING     ||.||.||  _spacing       ||.||
- *<------------------> ||.||.||<-----------> ||.||.||
- *                     group:0               group:1
- *                bar:0| bar:1 | bar2 --- bar:0 | bar:1 | bar:2
- *
- */
-
-const P = styled.p`
-  position: absolute;
-  top: 100%;
-  width: calc(40px * 4);
-  text-align: center;
-`;
-
-const Span = styled.span`
-  font-size: 15px;
-  position: absolute;
-  top: 100%;
-  width: 40px;
-`;

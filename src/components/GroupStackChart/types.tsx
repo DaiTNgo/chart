@@ -128,3 +128,19 @@ export type StudentScoreType = {
   strokeColor: string;
   domainScores: DomainScoreType[];
 };
+
+export type TData = {
+  label: string;
+  value: TBar[];
+  growth: number;
+};
+
+export type TBar = {
+  value: TStack[];
+  label: string;
+};
+
+export type TStack = {
+  percentage: number;
+  info: any;
+};

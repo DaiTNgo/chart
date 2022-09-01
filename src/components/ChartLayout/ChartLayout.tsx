@@ -3,8 +3,8 @@ import * as S from "./styled";
 
 type Props = {
   children: React.ReactNode;
-  renderLabelChart?: (() => JSX.Element[]) | (() => JSX.Element);
-  renderLabelGroup?: (() => JSX.Element[]) | (() => JSX.Element);
+  labelBar?: JSX.Element[];
+  labelGroup?: JSX.Element[];
   strokeOfXAxisChart?: number;
   title?: string;
   widthChart: number | undefined;
@@ -15,9 +15,9 @@ function ChartLayout({
   numOfStack = 1,
   strokeOfXAxisChart = 2,
   children,
-  renderLabelChart,
+  labelBar,
   widthChart,
-  renderLabelGroup,
+  labelGroup,
   title = "DEFAULT TITLE",
 }: Props) {
   const renderAxis = (_isXAxis: boolean) => {
@@ -67,8 +67,8 @@ function ChartLayout({
                 <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
                 {children}
               </S.Svg>
-              {renderLabelGroup && renderLabelGroup()}
-              {renderLabelChart && renderLabelChart()}
+              {labelGroup && labelGroup}
+              {labelBar && labelBar}
             </S.ChartWrapper>
           </S.ChartDataTop>
         </S.ChartData>
