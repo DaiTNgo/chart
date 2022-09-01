@@ -130,14 +130,14 @@ export type StudentScoreType = {
 };
 
 export type TData = {
-  label: string;
-  value: TBar[];
+  legendGroup: string;
+  valueGroup: TBar[];
   growth: number;
 };
 
 export type TBar = {
-  value: TStack[];
-  label: string;
+  valueBar: TStack[];
+  legendBar: string;
 };
 
 export type TStack = {

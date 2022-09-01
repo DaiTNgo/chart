@@ -1,132 +1,10 @@
 import GroupStackChart from "./components/GroupStackChart";
-import { _data3, aGrowth, aTestScore } from "./components/GroupStackChart/data";
+import { _data3, _data6 } from "./components/GroupStackChart/data";
 import { TData } from "./components/GroupStackChart/types";
 import styled from "styled-components";
 import { Children } from "react";
 
 function App() {
-  const data: TData[] = [
-    {
-      label: "Label Of Group Dai Class",
-      value: [
-        {
-          value: [
-            {
-              percentage: 12,
-              info: {
-                name: "hi",
-              },
-            },
-            {
-              percentage: 35,
-              info: {
-                name: "hi",
-              },
-            },
-          ],
-          label: "MOY",
-        },
-        {
-          value: [
-            {
-              percentage: 56,
-              info: {
-                name: "hi",
-              },
-            },
-            {
-              percentage: 29,
-              info: {
-                name: "hi",
-              },
-            },
-          ],
-          label: "EOY",
-        },
-      ],
-      growth: 100,
-    },
-    {
-      label: "Label Of Group Tinh",
-      value: [
-        {
-          value: [
-            {
-              percentage: 98,
-              info: {
-                name: "hi",
-              },
-            },
-            {
-              percentage: 20,
-              info: {
-                name: "hi",
-              },
-            },
-          ],
-          label: "Bar",
-        },
-        {
-          value: [
-            {
-              percentage: 10,
-              info: {
-                name: "hi",
-              },
-            },
-            {
-              percentage: 40,
-              info: {
-                name: "hi",
-              },
-            },
-          ],
-          label: "Bar",
-        },
-      ],
-      growth: -100,
-    },
-    {
-      label: "Label Of Group Tinh",
-      value: [
-        {
-          value: [
-            {
-              percentage: 98,
-              info: {
-                name: "hi",
-              },
-            },
-            {
-              percentage: 20,
-              info: {
-                name: "hi",
-              },
-            },
-          ],
-          label: "Bar",
-        },
-        {
-          value: [
-            {
-              percentage: 10,
-              info: {
-                name: "hi",
-              },
-            },
-            {
-              percentage: 40,
-              info: {
-                name: "hi",
-              },
-            },
-          ],
-          label: "Bar",
-        },
-      ],
-      growth: 30,
-    },
-  ];
   return (
     <div
       className="App"
@@ -138,7 +16,7 @@ function App() {
     >
       {/* stack group */}
       <GroupStackChart
-        data={data}
+        data={_data6}
         // spacingBetweenChart={60}
         // startSpacing={70}
         // strokeWidth={2}

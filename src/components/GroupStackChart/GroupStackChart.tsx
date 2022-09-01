@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { useRef } from "react";
 import ChartLayout from "../ChartLayout";
 import { StyledComponent } from "styled-components";
 import { uniqueId } from "lodash";
@@ -27,13 +27,13 @@ function GroupStackChart({
   componentLabelBar: ComponentBar,
   componentLabelGroup: ComponentGroup,
 }: Props) {
-  const labelGroup: any[] = [];
-  const labelBar: any[] = [];
+  const labelGroup: any[] = useRef([]).current;
+  const labelBar: any[] = useRef([]).current;
 
   const getNumOfValue = (_data: TData[]) => {
     const numOfGroup: number = _data.length;
-    const numOfBar: number = _data[0].value.length;
-    const numOfStack: number = _data[0].value[0].value.length;
+    const numOfBar: number = _data[0].valueGroup.length;
+    const numOfStack: number = _data[0].valueGroup[0].valueBar.length;
 
     return {
       numOfGroup,
@@ -138,8 +138,8 @@ function GroupStackChart({
     const arr: any[] = [];
 
     for (let groupIdx = 0; groupIdx < numOfGroup; groupIdx++) {
-      const groupItem = _data[groupIdx].value;
-      const groupLabel: string = _data[groupIdx].label;
+      const groupItem = _data[groupIdx].valueGroup;
+      const groupLabel: string = _data[groupIdx].legendGroup;
       const growth = _data[groupIdx].growth;
 
       const labelItemGroup = getLabelGroup(
@@ -156,8 +156,8 @@ function GroupStackChart({
       for (let barIdx = 0; barIdx < numOfBar; barIdx++) {
         let y = 320;
         const x = calcX(groupIdx, barIdx);
-        const barItem = groupItem[barIdx].value;
-        const barLabel = groupItem[barIdx].label;
+        const barItem = groupItem[barIdx].valueBar;
+        const barLabel = groupItem[barIdx].legendBar;
 
         labelBar.push(
           getLabelBar(

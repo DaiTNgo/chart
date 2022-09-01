@@ -7,7 +7,7 @@ type Props = {
   labelGroup?: JSX.Element[];
   strokeOfXAxisChart?: number;
   title?: string;
-  widthChart: number | undefined;
+  widthChart?: number;
   // render line and percentage: 1 => 100%; 5 => 500%
   numOfStack?: number;
 };
