@@ -1,12 +1,11 @@
-import React, { useCallback } from "react";
+import React from "react";
 import * as S from "./styled";
-import styled from "styled-components";
 
 type Props = {
   children: React.ReactNode;
   renderLabelChart?: (() => JSX.Element[]) | (() => JSX.Element);
   renderLabelGroup?: (() => JSX.Element[]) | (() => JSX.Element);
-  strokeWidth?: number;
+  strokeOfXAxisChart?: number;
   title?: string;
   widthChart: number | undefined;
   // render line and percentage: 1 => 100%; 5 => 500%
@@ -14,7 +13,7 @@ type Props = {
 };
 function ChartLayout({
   numOfStack = 1,
-  strokeWidth = 2,
+  strokeOfXAxisChart = 2,
   children,
   renderLabelChart,
   widthChart,
@@ -23,8 +22,9 @@ function ChartLayout({
 }: Props) {
   const renderAxis = (_isXAxis: boolean) => {
     const PERCENT = numOfStack * 100;
-    const HEIGHT = 300;
-    const Y_END = 20;
+    const HEIGHT_SVG_PX = 300;
+    const Y_END_SVG_PX = 20;
+
     let DISTANCE_PERCENTAGE = 20;
     if (numOfStack > 1) {
       DISTANCE_PERCENTAGE = 50;
@@ -34,8 +34,8 @@ function ChartLayout({
     const arr = new Array(numOfPercent).fill(0);
 
     return arr.map((_, index) => {
-      const yDistancePercentagePx = HEIGHT / numOfPercent;
-      const y = Y_END + yDistancePercentagePx * index;
+      const yDistancePercentagePx = HEIGHT_SVG_PX / numOfPercent;
+      const y = Y_END_SVG_PX + yDistancePercentagePx * index;
       const text = PERCENT - DISTANCE_PERCENTAGE * index;
 
       if (_isXAxis) {
@@ -64,7 +64,7 @@ function ChartLayout({
             <S.ChartWrapper>
               <S.Svg width={widthChart}>
                 {renderAxis(true)}
-                <S.LineBottom y={320} strokeWidth={strokeWidth} />
+                <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
                 {children}
               </S.Svg>
               {renderLabelGroup && renderLabelGroup()}
