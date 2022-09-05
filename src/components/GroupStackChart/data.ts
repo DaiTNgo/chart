@@ -4112,8 +4112,46 @@ const _data = _data4.map((item) => {
     classesScores: a,
   };
 });
-console.log("=> :::: resutl ::::", _data);
+console.log("🚀 >>>::::::::: _data :::::::::", _data);
+const _cloneData = [];
+for (
+  let i = 0, lengthGroup = _data[0].classesScores.length;
+  i < lengthGroup;
+  i++
+) {
+  console.log("lengthGroup", i);
+  let growth = _data[0].classesScores[i].score;
+  const firstItemBar = _data[0].classesScores[i];
+  for (let j = 1, lengthBar = _data.length; j < lengthBar; j++) {
+    growth = _data[j].classesScores[i].score - growth;
 
+    const nthItemBar = _data[j].classesScores[i];
+    _cloneData.push({
+      legendGroup: firstItemBar.className,
+      valueGroup: [
+        {
+          valueBar: getStackItem(firstItemBar.domainScores),
+          legendBar: _data[0].label,
+        },
+        {
+          valueBar: getStackItem(nthItemBar.domainScores),
+          legendBar: _data[j].label,
+        },
+      ],
+      growth: growth,
+    });
+  }
+}
+
+function getStackItem(_data: any[]) {
+  return _data.map((item) => {
+    return {
+      percentage: item.percentageScore,
+      info: item,
+    };
+  });
+}
+console.log("🚀 >>>::::::::: _cloneData :::::::::", _cloneData);
 const _data6 = [
   {
     legendGroup: "Label Of Group Dai Class",
@@ -4236,4 +4274,4 @@ const _data6 = [
     growth: 30,
   },
 ];
-export { _data3, _data1, _data2, _data5, _data4, _data6 };
+export { _data3, _data1, _data2, _data5, _data4, _data6, _cloneData };

@@ -1,5 +1,5 @@
 import GroupStackChart from "./components/GroupStackChart";
-import { _data3, _data6 } from "./components/GroupStackChart/data";
+import { _data3, _data6, _cloneData } from "./components/GroupStackChart/data";
 import { TData } from "./components/GroupStackChart/types";
 import styled from "styled-components";
 import { Children } from "react";
@@ -16,7 +16,7 @@ function App() {
     >
       {/* stack group */}
       <GroupStackChart
-        data={_data6}
+        data={_cloneData}
         // spacingBetweenChart={60}
         // startSpacing={70}
         // strokeWidth={2}
