@@ -4105,7 +4105,7 @@ _data4.forEach((d) => {
 
 const _data = _data4.map((item) => {
   const a = item.classesScores.filter((c, idx) => {
-    return mapKeys.get(c.classId) !== 1;
+    return mapKeys.get(c.classId) === _data4.length;
   });
   return {
     ...item,
