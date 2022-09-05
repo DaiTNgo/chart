@@ -1,9 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import ChartLayout from "../ChartLayout";
 import { StyledComponent } from "styled-components";
 import { uniqueId } from "lodash";
 import { TData } from "./types";
 import * as S from "./styled";
+import "antd/dist/antd.css";
+import { Button, Popover } from "antd";
+import Rect from "./Rect";
+import Arrow from "./Arrow";
 
 type Props = {
   data: TData[];
@@ -16,6 +20,7 @@ type Props = {
   componentLabelBar?: StyledComponent<any, any>;
   componentLabelGroup?: StyledComponent<any, any>;
 };
+
 function GroupStackChart({
   title = "DEFAULT TITLE",
   spacingBetweenChart = 50,
@@ -107,44 +112,37 @@ function GroupStackChart({
     );
   };
 
-  const getArrow = (growth: number, yMin: number, groupIdx: number) => {
+  const getArrow = (
+    growth: number,
+    yMin: number,
+    groupIdx: number,
+    info?: any
+  ) => {
     const HEIGHT_DEFAULT_SVG_ARROW = 80;
     const x = calcX(groupIdx, 0) + (widthBar - HEIGHT_DEFAULT_SVG_ARROW / 2);
 
-    if (growth > 0) {
-      return (
-        <ArrowUpGrowth
-          key={uniqueId(`${x}`)}
-          x={x}
-          y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
-          text={`${growth}%`}
-          handleClick={handleClick}
-        />
-      );
-    } else {
-      return (
-        <ArrowDownGrowth
-          key={uniqueId(`${x}`)}
-          x={x}
-          y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
-          text={`${growth}%`}
-          handleClick={handleClick}
-        />
-      );
-    }
+    return (
+      <Arrow
+        key={uniqueId(`${x}`)}
+        x={x}
+        y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
+        growth={`${growth}%`}
+        info={info}
+        direction={growth > 0 ? "up" : "down"}
+      />
+    );
   };
 
   const renderChart = (_data: TData[]) => {
     const arr: any[] = [];
 
     for (let groupIdx = 0; groupIdx < numOfGroup; groupIdx++) {
-      const groupItem = _data[groupIdx].valueGroup;
-      const groupLabel: string = _data[groupIdx].legendGroup;
-      const growth = _data[groupIdx].growth;
+      const groupItem = _data[groupIdx];
+      const { valueGroup, legendGroup, growth } = groupItem;
 
       const labelItemGroup = getLabelGroup(
         widthBar * numOfBar,
-        groupLabel,
+        legendGroup,
         startSpacing +
           widthBar * numOfBar * groupIdx +
           spacingBetweenChart * groupIdx
@@ -156,8 +154,8 @@ function GroupStackChart({
       for (let barIdx = 0; barIdx < numOfBar; barIdx++) {
         let y = 320;
         const x = calcX(groupIdx, barIdx);
-        const barItem = groupItem[barIdx].valueBar;
-        const barLabel = groupItem[barIdx].legendBar;
+        const barItem = valueGroup[barIdx].valueBar;
+        const barLabel = valueGroup[barIdx].legendBar;
 
         labelBar.push(
           getLabelBar(
@@ -180,23 +178,21 @@ function GroupStackChart({
           yMin = Math.min(yMin, y);
 
           arr.push(
-            <rect
+            <Rect
               key={uniqueId(`${groupIdx + barIdx + stackIdx}`)}
-              width={widthBar}
-              strokeWidth="1.25" // default
+              widthBar={widthBar}
               x={x}
               y={y}
-              height={heightPx}
-              stroke={stackItem.info?.strokeColor || "gray"}
-              fill={stackItem.info?.fillColor || "yellow"}
-              onClick={handleClick}
+              heightPx={heightPx}
+              strokeColor={stackItem.info?.strokeColor}
+              fillColor={stackItem.info?.fillColor}
+              info={"hi"}
             />
           );
         }
       }
-
       if (isShowGrowth) {
-        const arrow = getArrow(growth, yMin, groupIdx);
+        const arrow = getArrow(growth, yMin, groupIdx, groupItem);
         arr.push(arrow);
       }
     }
@@ -225,31 +221,67 @@ function ArrowDownGrowth({
   x,
   y,
   text,
-  handleClick,
+  info,
 }: {
   x: number;
   y: number;
   text: string;
-  handleClick: () => void;
+  info: any;
 }) {
+  const [open, setOpen] = useState(false);
+
+  const hide = () => {
+    setOpen(false);
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
+  const content = (
+    <>
+      <p>Class: {info.legendGroup}</p>
+      <p>Growth: {info.growth}</p>
+    </>
+  );
+  const title = (
+    <button
+      onClick={hide}
+      style={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+      }}
+    >
+      X
+    </button>
+  );
   return (
-    <svg x={x} y={y} width={80} height={80}>
-      <g onClick={handleClick}>
-        <polygon
-          points="15,10 65,10 65,40 72,40 40,55 8,40 15,40"
-          fill={"#3197C2"}
-        />
-        <text
-          x="50%"
-          y="40%"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fill={"#fff"}
-        >
-          {text}
-        </text>
-      </g>
-    </svg>
+    <Popover
+      open={open}
+      onOpenChange={handleOpenChange}
+      placement="topLeft"
+      title={title}
+      content={content}
+      trigger="click"
+    >
+      <svg x={x} y={y} width={80} height={80}>
+        <g>
+          <polygon
+            points="15,10 65,10 65,40 72,40 40,55 8,40 15,40"
+            fill={"#3197C2"}
+          />
+          <text
+            x="50%"
+            y="40%"
+            dominantBaseline="middle"
+            textAnchor="middle"
+            fill={"#fff"}
+          >
+            {text}
+          </text>
+        </g>
+      </svg>
+    </Popover>
   );
 }
 
@@ -257,31 +289,34 @@ function ArrowUpGrowth({
   x,
   y,
   text,
-  handleClick,
+  info,
 }: {
   x: number;
   y: number;
   text: string;
-  handleClick?: () => void;
+  info: any;
 }) {
+  const content = <>{JSON.stringify(info)}</>;
   return (
-    <svg x={x} y={y} width={80} height={80}>
-      <g onClick={handleClick}>
-        <polygon
-          points="15,70 65,70 65,40 72,40 40,25 8,40 15,40"
-          fill={"#3197C2"}
-        />
-        <text
-          x="50%"
-          y="60%"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fill={"#fff"}
-        >
-          {text}
-        </text>
-      </g>
-    </svg>
+    <Popover placement="topLeft" title={text} content={content} trigger="click">
+      <svg x={x} y={y} width={80} height={80}>
+        <g>
+          <polygon
+            points="15,70 65,70 65,40 72,40 40,25 8,40 15,40"
+            fill={"#3197C2"}
+          />
+          <text
+            x="50%"
+            y="60%"
+            dominantBaseline="middle"
+            textAnchor="middle"
+            fill={"#fff"}
+          >
+            {text}
+          </text>
+        </g>
+      </svg>
+    </Popover>
   );
 }
 
