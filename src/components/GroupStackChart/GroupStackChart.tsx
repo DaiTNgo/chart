@@ -2,12 +2,12 @@ import React, { useRef, useState } from "react";
 import ChartLayout from "../ChartLayout";
 import { StyledComponent } from "styled-components";
 import { uniqueId } from "lodash";
-import { TData } from "./types";
+import { Growth, TData } from "./types";
 import * as S from "./styled";
 import "antd/dist/antd.css";
-import { Button, Popover } from "antd";
 import Rect from "./Rect";
-import Arrow from "./Arrow";
+import ArrowGrowth from "./ArrowGrowth";
+import { getNumOfValue } from "./helper";
 
 type Props = {
   data: TData[];
@@ -17,8 +17,11 @@ type Props = {
   title?: string;
   strokeWidth?: number;
   isShowGrowth?: boolean;
+  isShowPopoverGrowth?: boolean;
+  isShowPopoverBar?: boolean;
   componentLabelBar?: StyledComponent<any, any>;
   componentLabelGroup?: StyledComponent<any, any>;
+  widthForLabelGroup?: number;
 };
 
 function GroupStackChart({
@@ -28,61 +31,32 @@ function GroupStackChart({
   strokeWidth = 2,
   widthBar = 40,
   isShowGrowth = false,
+  isShowPopoverGrowth = false,
+  isShowPopoverBar = false,
+  widthForLabelGroup,
   data,
   componentLabelBar: ComponentBar,
   componentLabelGroup: ComponentGroup,
 }: Props) {
-  const labelGroup: any[] = useRef([]).current;
-  const labelBar: any[] = useRef([]).current;
+  console.log("=> :::: data ::::", data);
 
-  const getNumOfValue = (_data: TData[]) => {
-    const numOfGroup: number = _data.length;
-    const numOfBar: number = _data[0].valueGroup.length;
-    const numOfStack: number = _data[0].valueGroup[0].valueBar.length;
-
-    return {
-      numOfGroup,
-      numOfBar,
-      numOfStack,
-    };
-  };
   const { numOfStack, numOfGroup, numOfBar } = getNumOfValue(data);
 
-  const calcWidthXAxis = () => {
-    let widthXAxis = 0;
-    if (numOfGroup > 1) {
-      widthXAxis =
-        startSpacing +
-        spacingBetweenChart * (numOfGroup - 1) +
-        widthBar * numOfBar +
-        widthBar * (numOfGroup - 1) * numOfBar;
-    } else {
-      widthXAxis =
-        startSpacing +
-        spacingBetweenChart * (numOfBar - 1) +
-        widthBar * (numOfBar - 1);
-    }
-    return widthXAxis;
-  };
-  const widthXAxis = calcWidthXAxis();
-
   const calcX = (_groupIdx: number, _barIdx: number) => {
-    let x = 0;
-    const numOfGroup = 2;
-    const numOfBar = 2;
     if (numOfGroup > 1) {
-      x =
+      return (
         startSpacing +
         spacingBetweenChart * _groupIdx +
         widthBar * _barIdx +
-        widthBar * _groupIdx * numOfBar;
+        widthBar * _groupIdx * numOfBar
+      );
     } else {
-      x = startSpacing + spacingBetweenChart * _barIdx + widthBar * _barIdx;
+      return startSpacing + spacingBetweenChart * _barIdx + widthBar * _barIdx;
     }
-    return x;
   };
+  const widthXAxis = calcX(numOfGroup - 1, numOfBar + 1);
 
-  const getLabelBar = (_width: number, _text: string, _left: number) => {
+  const getEleLabelBar = (_width: number, _text: string, _left: number) => {
     return (
       <S.LabelBar
         key={uniqueId(`${_width + _left + _text}`)}
@@ -97,7 +71,7 @@ function GroupStackChart({
     );
   };
 
-  const getLabelGroup = (_width: number, _text: string, _left: number) => {
+  const getEleLabelGroup = (_width: number, _text: string, _left: number) => {
     return (
       <S.LabelGroup
         key={uniqueId(`${_width + _left + _text}`)}
@@ -112,72 +86,79 @@ function GroupStackChart({
     );
   };
 
-  const getArrow = (
-    growth: number,
+  const getEleArrow = (
+    { value, title, content }: Growth,
     yMin: number,
-    groupIdx: number,
-    info?: any
+    groupIdx: number
   ) => {
     const HEIGHT_DEFAULT_SVG_ARROW = 80;
     const x = calcX(groupIdx, 0) + (widthBar - HEIGHT_DEFAULT_SVG_ARROW / 2);
-
     return (
-      <Arrow
+      <ArrowGrowth
+        isPopover={isShowPopoverGrowth}
         key={uniqueId(`${x}`)}
         x={x}
         y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
-        growth={`${growth}%`}
-        info={info}
-        direction={growth > 0 ? "up" : "down"}
+        growth={value}
+        title={title}
+        content={content}
       />
     );
   };
 
-  const renderChart = (_data: TData[]) => {
-    const arr: any[] = [];
+  const getChart = (_data: TData[]) => {
+    const charts: JSX.Element[] = [];
+    const labelBars: JSX.Element[] = [];
+    const labelGroups: JSX.Element[] = [];
 
     for (let groupIdx = 0; groupIdx < numOfGroup; groupIdx++) {
       const groupItem = _data[groupIdx];
       const { valueGroup, legendGroup, growth } = groupItem;
 
-      const labelItemGroup = getLabelGroup(
-        widthBar * numOfBar,
-        legendGroup,
+      const widthGroup = widthForLabelGroup
+        ? widthForLabelGroup
+        : widthBar * numOfBar;
+      const leftGroup =
         startSpacing +
-          widthBar * numOfBar * groupIdx +
-          spacingBetweenChart * groupIdx
+        widthBar * numOfBar * groupIdx +
+        spacingBetweenChart * groupIdx;
+      const labelItemGroup = getEleLabelGroup(
+        widthGroup,
+        legendGroup,
+        leftGroup
       );
-      labelGroup.push(labelItemGroup);
+      labelGroups.push(labelItemGroup);
 
       let yMin = 99999999;
 
       for (let barIdx = 0; barIdx < numOfBar; barIdx++) {
         let y = 320;
         const x = calcX(groupIdx, barIdx);
-        const barItem = valueGroup[barIdx].valueBar;
-        const barLabel = valueGroup[barIdx].legendBar;
+        const barItem = valueGroup[barIdx];
+        const { valueBar, legendBar } = barItem;
 
-        labelBar.push(
-          getLabelBar(
-            widthBar,
-            barLabel,
+        if (legendBar) {
+          const left =
             startSpacing +
-              spacingBetweenChart * groupIdx +
-              widthBar * barIdx +
-              widthBar * numOfBar * groupIdx
-          )
-        );
+            spacingBetweenChart * groupIdx +
+            widthBar * barIdx +
+            widthBar * numOfBar * groupIdx;
+
+          const labelItemBar = getEleLabelBar(widthBar, legendBar, left);
+          labelBars.push(labelItemBar);
+        }
 
         for (let stackIdx = 0; stackIdx < numOfStack; stackIdx++) {
-          const stackItem = barItem[stackIdx];
-          const percentageScore = stackItem.percentage;
-          const heightPx = percentageScore
-            ? (percentageScore * 300) / (100 * numOfStack)
+          const stackItem = valueBar[stackIdx];
+          const { percentage, content, title } = stackItem;
+
+          const heightPx = percentage
+            ? (percentage * 300) / (100 * numOfStack)
             : 10;
           y -= heightPx;
           yMin = Math.min(yMin, y);
 
-          arr.push(
+          charts.push(
             <Rect
               key={uniqueId(`${groupIdx + barIdx + stackIdx}`)}
               widthBar={widthBar}
@@ -186,137 +167,34 @@ function GroupStackChart({
               heightPx={heightPx}
               strokeColor={stackItem.info?.strokeColor}
               fillColor={stackItem.info?.fillColor}
-              info={"hi"}
+              isPopover={isShowPopoverBar}
+              title={title}
+              content={content}
             />
           );
         }
       }
-      if (isShowGrowth) {
-        const arrow = getArrow(growth, yMin, groupIdx, groupItem);
-        arr.push(arrow);
+
+      if (isShowGrowth && growth !== undefined) {
+        const arrow = getEleArrow(growth, yMin, groupIdx);
+        charts.push(arrow);
       }
     }
-    return arr;
+    return { charts, labelBars, labelGroups };
   };
-
-  const handleClick = () => {
-    console.log("=> :::: Clicked ::::");
-  };
+  const { charts, labelBars, labelGroups } = getChart(data);
 
   return (
     <ChartLayout
       widthChart={widthXAxis}
       strokeOfXAxisChart={strokeWidth}
       numOfStack={numOfStack}
-      labelGroup={labelGroup}
-      labelBar={labelBar}
+      labelGroup={labelGroups}
+      labelBar={labelBars}
       title={title}
     >
-      {renderChart(data)}
+      {charts}
     </ChartLayout>
-  );
-}
-
-function ArrowDownGrowth({
-  x,
-  y,
-  text,
-  info,
-}: {
-  x: number;
-  y: number;
-  text: string;
-  info: any;
-}) {
-  const [open, setOpen] = useState(false);
-
-  const hide = () => {
-    setOpen(false);
-  };
-
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen);
-  };
-  const content = (
-    <>
-      <p>Class: {info.legendGroup}</p>
-      <p>Growth: {info.growth}</p>
-    </>
-  );
-  const title = (
-    <button
-      onClick={hide}
-      style={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-      }}
-    >
-      X
-    </button>
-  );
-  return (
-    <Popover
-      open={open}
-      onOpenChange={handleOpenChange}
-      placement="topLeft"
-      title={title}
-      content={content}
-      trigger="click"
-    >
-      <svg x={x} y={y} width={80} height={80}>
-        <g>
-          <polygon
-            points="15,10 65,10 65,40 72,40 40,55 8,40 15,40"
-            fill={"#3197C2"}
-          />
-          <text
-            x="50%"
-            y="40%"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            fill={"#fff"}
-          >
-            {text}
-          </text>
-        </g>
-      </svg>
-    </Popover>
-  );
-}
-
-function ArrowUpGrowth({
-  x,
-  y,
-  text,
-  info,
-}: {
-  x: number;
-  y: number;
-  text: string;
-  info: any;
-}) {
-  const content = <>{JSON.stringify(info)}</>;
-  return (
-    <Popover placement="topLeft" title={text} content={content} trigger="click">
-      <svg x={x} y={y} width={80} height={80}>
-        <g>
-          <polygon
-            points="15,70 65,70 65,40 72,40 40,25 8,40 15,40"
-            fill={"#3197C2"}
-          />
-          <text
-            x="50%"
-            y="60%"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            fill={"#fff"}
-          >
-            {text}
-          </text>
-        </g>
-      </svg>
-    </Popover>
   );
 }
 

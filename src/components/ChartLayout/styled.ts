@@ -17,7 +17,9 @@ const Line = styled.line.attrs((props: { y: number }) => ({
 `;
 
 const Text = styled.text`
-  stroke: #6dcff6;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  stroke: #141414;
   stroke-width: calc(2px / 3);
 `;
 
@@ -27,8 +29,8 @@ const LineBottom = styled.line.attrs((props: { y: number }) => ({
   y1: props.y,
   y2: props.y,
 }))`
-  stroke: #a7a9ab;
-  stroke-width: ${(props) => props.strokeWidth};
+  stroke: #808285;
+  stroke-width: 2;
 `;
 
 const ChartData = styled.div`
@@ -38,23 +40,6 @@ const ChartData = styled.div`
   overflow-x: auto;
   overflow-y: auto;
 `;
-const ChartDataTop = styled.div`
-  //position: relative;
-  //
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-  //flex-direction: column;
-  //gap: 40px;
-  //
-  //min-width: 100%;
-  //width: max-content;
-  //height: 360px;
-  //
-  //padding-top: 60px;
-  //padding-bottom: 40px;
-  //margin-top: -50px;
-`;
 
 const ChartWrapper = styled.div`
   position: relative;
@@ -63,26 +48,28 @@ const ChartWrapper = styled.div`
 
 const ChartContainer = styled.div`
   --left-chart-width: 50px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 50px);
   padding: 0 50px;
+
+  .chart-right {
+    width: calc(100% - var(--left-chart-width));
+    height: 500px;
+    display: flex;
+  }
+
   .chart-left {
     width: var(--left-chart-width);
+
     .chart-title {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
       margin: 0;
       color: #7a8186;
       font-size: 13.5pt;
+      font-family: HelveticaNeue-Medium;
     }
-  }
-  .chart-right {
-    width: calc(100% - var(--left-chart-width));
-    height: 500px;
-    display: flex;
   }
   .chart-score {
     width: 50px;
@@ -99,13 +86,4 @@ const ChartContainer = styled.div`
     margin-top: 12px;
   }
 `;
-export {
-  Svg,
-  Line,
-  LineBottom,
-  ChartData,
-  ChartDataTop,
-  ChartWrapper,
-  ChartContainer,
-  Text,
-};
+export { Svg, Line, LineBottom, ChartData, ChartWrapper, ChartContainer, Text };

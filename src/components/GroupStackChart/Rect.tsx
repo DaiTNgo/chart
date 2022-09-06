@@ -1,54 +1,36 @@
 import React, { useState } from "react";
-import { Popover } from "antd";
+import { Popover, PopoverProps } from "antd";
+import PopoverFA from "../PopoverFA/PopoverFA";
 type Props = {
-  key: string;
   widthBar: number;
   x: number;
   y: number;
   heightPx: number;
   strokeColor: string;
   fillColor: string;
-  info: any;
-};
+  isPopover?: boolean;
+} & PopoverProps;
 function Rect({
-  key,
+  strokeColor = "gray",
+  fillColor = "yellow",
   widthBar,
   x,
   y,
   heightPx,
-  strokeColor = "gray",
-  fillColor = "yellow",
-  info,
+  ...props
 }: Props) {
-  const [open, setOpen] = useState(false);
-
-  const hide = () => {
-    setOpen(false);
-  };
-
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen);
-  };
   return (
-    <Popover
-      open={open}
-      onOpenChange={handleOpenChange}
-      placement="topLeft"
-      title={"hihi"}
-      content={<button onClick={hide}> Close</button>}
-      trigger="click"
-    >
+    <PopoverFA {...props}>
       <rect
-        key={key}
         width={widthBar}
-        strokeWidth="1.25" // default
+        strokeWidth="1.25"
         x={x}
         y={y}
         height={heightPx}
         stroke={strokeColor}
         fill={fillColor}
       />
-    </Popover>
+    </PopoverFA>
   );
 }
 

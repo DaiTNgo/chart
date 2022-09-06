@@ -169,11 +169,7 @@ function Growth({ data }: { data: any[] }) {
   const START_Y_CIRCLE = 320;
   const START_Y_RECT = 310;
   return (
-    <ChartLayout
-      renderLabel={renderLabel(data)}
-      strokeWidth={2}
-      width={calcWidthSvg(data)}
-    >
+    <ChartLayout strokeOfXAxisChart={2} widthChart={calcWidthSvg(data)}>
       {renderLineBreak(data)}
       {renderChart(data)}
     </ChartLayout>

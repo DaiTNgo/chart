@@ -1,3 +1,5 @@
+import { PopoverProps } from "antd";
+
 export type TestScoreResponseType = {
   label?: string;
   assessmentId: number;
@@ -132,15 +134,17 @@ export type StudentScoreType = {
 export type TData = {
   legendGroup: string;
   valueGroup: TBar[];
-  growth: number;
+  growth?: Growth;
 };
-
+export type Growth = {
+  value: number;
+} & Pick<PopoverProps, "title" | "content">;
 export type TBar = {
   valueBar: TStack[];
-  legendBar: string;
+  legendBar?: string;
 };
 
 export type TStack = {
   percentage: number;
   info: any;
-};
+} & Required<Pick<PopoverProps, "title" | "content">>;

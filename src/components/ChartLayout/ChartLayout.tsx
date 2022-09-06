@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import * as S from "./styled";
-import { Button, Popover } from "antd";
 
 type Props = {
   children: React.ReactNode;
@@ -61,17 +60,15 @@ function ChartLayout({
           <S.Svg width={30}>{renderAxis(false)}</S.Svg>
         </div>
         <S.ChartData>
-          <S.ChartDataTop>
-            <S.ChartWrapper>
-              <S.Svg width={widthChart}>
-                {renderAxis(true)}
-                <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
-                {children}
-              </S.Svg>
-              {labelGroup && labelGroup}
-              {labelBar && labelBar}
-            </S.ChartWrapper>
-          </S.ChartDataTop>
+          <S.ChartWrapper>
+            <S.Svg width={widthChart}>
+              {renderAxis(true)}
+              <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
+              {children}
+            </S.Svg>
+            {labelBar && labelBar}
+            {labelGroup && labelGroup}
+          </S.ChartWrapper>
         </S.ChartData>
       </div>
     </S.ChartContainer>
