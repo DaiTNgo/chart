@@ -30,8 +30,6 @@ function parseOneClassOneStudentTestScore(data: any) {
               {
                 percentage: item.percentageScore,
                 info: item,
-                title: <p>title</p>,
-                content: <p>content</p>,
               },
             ],
           },
@@ -142,8 +140,6 @@ function parseAllClassesGrowth(data: any) {
       return {
         percentage: item.percentageScore,
         info: item,
-        title: "",
-        content: "",
       };
     });
   }
@@ -172,11 +168,11 @@ function parseAllClassesTestScore(data: any) {
         title: <S.Title>{data.className}</S.Title>,
         content: (
           <PopoverBar
+            teacher={data.teacher.camelFirstLastName}
             description={item.domainName}
+            color={TypeProficient[item.proficiencyLevel]}
             proficiencyLevel={item.proficiencyLevel}
             score={item.percentageScore}
-            teacher={data.teacher.camelFirstLastName}
-            color={TypeProficient[item.proficiencyLevel]}
           />
         ),
         info: item,
