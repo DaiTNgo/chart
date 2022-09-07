@@ -7,6 +7,11 @@ export const typeProficient = new Map([
   ["Partially Proficient", "#F5C839"],
   ["Below Proficient", "#ED7092"],
 ]);
+export enum TypeProficient {
+  "Proficient" = "#88CA22",
+  "Partially Proficient" = "#F5C839",
+  "Below Proficient" = "#ED7092",
+}
 function parseOneClassOneStudentTestScore(data: any) {
   const _oneClassOneStudentTestScoreClone: TData[] = [];
   const _oneClassOneStudentTestScoreCloneMap = data.studentScores.find(
@@ -61,6 +66,7 @@ function parseOneClassAllStudentsTestScore(data: any) {
             description={item.domainName}
             proficiencyLevel={item.proficiencyLevel}
             score={item.percentageScore}
+            color={TypeProficient[item.proficiencyLevel]}
           />
         ),
         info: item,
@@ -170,7 +176,7 @@ function parseAllClassesTestScore(data: any) {
             proficiencyLevel={item.proficiencyLevel}
             score={item.percentageScore}
             teacher={data.teacher.camelFirstLastName}
-            color={typeProficient.get(item.proficiencyLevel)}
+            color={TypeProficient[item.proficiencyLevel]}
           />
         ),
         info: item,

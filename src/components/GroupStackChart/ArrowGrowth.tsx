@@ -6,6 +6,7 @@ type Props = {
   y: number;
   growth: number;
   isPopover?: boolean;
+  typeProficient?: string;
 } & PopoverProps;
 
 export enum Direction {
@@ -41,7 +42,7 @@ function ArrowGrowth({ x, y, growth, ...props }: Props) {
   const { points, xOfText, yOfText } = arrow[direction];
 
   return (
-    <PopoverFA {...props} typeBorder={"growth"}>
+    <PopoverFA {...props}>
       <svg x={x} y={y} width={80} height={80}>
         <g>
           <polygon points={points} fill={"#3197C2"} />

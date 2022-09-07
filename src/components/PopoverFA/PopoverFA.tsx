@@ -5,7 +5,9 @@ import "./styles.scss";
 import CloseLarge from "./CloseLarge";
 
 type Props = {
-  typeBorder?: "growth" | Omit<string, "growth">;
+  typeProficient?:
+    | keyof typeof TypeProficient
+    | Omit<string, keyof typeof TypeProficient>;
   closeIcon?: React.ReactNode;
   isPopover?: boolean;
 
@@ -13,7 +15,7 @@ type Props = {
 } & PopoverProps;
 
 function PopoverFA({
-  typeBorder = "",
+  typeProficient = "",
   title = "",
   isPopover = true,
   closeIcon = <CloseLarge width={15} height={15} />,
@@ -29,9 +31,13 @@ function PopoverFA({
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
   };
+
   return (
     <Popover
-      overlayClassName={`popover-full-access ${typeBorder}`}
+      overlayClassName={`popover-full-access ${typeProficient.replace(
+        " ",
+        "-"
+      )}`}
       onVisibleChange={handleOpenChange}
       visible={isPopover ? open : false}
       trigger="click"

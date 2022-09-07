@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Popover, PopoverProps } from "antd";
 import PopoverFA from "../PopoverFA/PopoverFA";
+import { typeProficient } from "../parseData";
 type Props = {
   widthBar: number;
   x: number;
@@ -9,6 +10,7 @@ type Props = {
   strokeColor: string;
   fillColor: string;
   isPopover?: boolean;
+  typeProficient?: string;
 } & PopoverProps;
 function Rect({
   strokeColor = "gray",

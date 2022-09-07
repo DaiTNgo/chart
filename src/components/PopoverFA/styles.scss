@@ -1,24 +1,27 @@
 .popover-full-access {
-  --color: rgb(237, 112, 146);
+  //   --color: rgb(237, 112, 146);
   --box-shadow-color: #a6a6a6;
-
-   * {
-     padding:0;
-   }
+  --color: black;
+  * {
+    padding: 0;
+  }
   .ant-popover-inner {
     box-shadow: 0 0 0 1px var(--color), 0 0 13px 1px var(--box-shadow-color);
-    padding:10px;
+    padding: 10px;
   }
-
   .ant-popover-arrow-content {
-    box-shadow: 0 0 0 1.5px var(--color)
+    box-shadow: 0 0 0 1.5px var(--color);
   }
-
-  &.growth{
-    --color: black;
-  }
-
-  .ant-popover-title{
+  .ant-popover-title {
     border-bottom: 0;
+  }
+  &.Proficient {
+    --color: #88ca22;
+  }
+  &.Partially-Proficient {
+    --color: #f5c839;
+  }
+  &.Below-Proficient {
+    --color: #ed7092;
   }
 }

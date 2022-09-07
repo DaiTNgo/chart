@@ -112,14 +112,16 @@ function GroupStackChart({
     for (let groupIdx = 0; groupIdx < numOfGroup; groupIdx++) {
       const groupItem = _data[groupIdx];
       const { valueGroup, legendGroup, growth } = groupItem;
-
+      const GAP = 10;
       const widthGroup = widthForLabelGroup
         ? widthForLabelGroup
-        : widthBar * numOfBar + spacingBetweenChart / 2;
+        : widthBar * numOfBar + spacingBetweenChart - GAP;
       const leftGroup =
         startSpacing +
         widthBar * numOfBar * groupIdx +
-        spacingBetweenChart * groupIdx;
+        spacingBetweenChart * groupIdx +
+        (widthBar * numOfBar) / 2 -
+        widthGroup / 2;
 
       const labelItemGroup = getEleLabelGroup(
         widthGroup,
@@ -170,6 +172,7 @@ function GroupStackChart({
               isPopover={isShowPopoverBar}
               title={title}
               content={content}
+              typeProficient={stackItem.info?.proficiencyLevel}
             />
           );
         }
