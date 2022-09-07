@@ -7,18 +7,17 @@ import CloseLarge from "./CloseLarge";
 type Props = {
   typeBorder?: "growth" | Omit<string, "growth">;
   closeIcon?: React.ReactNode;
-  title?: React.ReactNode | (() => React.ReactNode);
   isPopover?: boolean;
 
   children: React.ReactNode;
-} & Omit<PopoverProps, "title">;
+} & PopoverProps;
 
 function PopoverFA({
   typeBorder = "",
   title = "",
   isPopover = true,
-  children,
   closeIcon = <CloseLarge width={15} height={15} />,
+  children,
   ...props
 }: Props) {
   const [open, setOpen] = useState(false);

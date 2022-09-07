@@ -12,21 +12,21 @@ const ReportLabel = styled.div<{ index: number }>`
   display: inline-block;
 `;
 
-const LabelGroup = styled.p`
+const LabelGroup = styled.p<{ widthBar?: number }>`
   position: absolute;
   top: 100%;
 
-  width: 40px;
+  width: ${(props) => (props.widthBar || 40) * 2}px;
   text-align: center;
-  transform: translateY(40px) rotate(-45deg);
+  //transform: rotate(-45deg);
 `;
 
-const LabelBar = styled.span`
+const LabelBar = styled.span<{ width?: number }>`
   position: absolute;
 
   font-size: 15px;
-  top: 100%;
-  width: 40px;
+  bottom: 15px;
+  width: ${(props) => props.width || 40}px;
   text-align: center;
 `;
 

@@ -148,3 +148,126 @@ export type TStack = {
   percentage: number;
   info: any;
 } & Required<Pick<PopoverProps, "title" | "content">>;
+
+const _data6 = [
+  {
+    legendGroup: "Label Of Group Dai Class",
+    valueGroup: [
+      {
+        valueBar: [
+          {
+            percentage: 12,
+            info: {
+              name: "hi",
+            },
+          },
+          {
+            percentage: 35,
+            info: {
+              name: "hi",
+            },
+          },
+        ],
+        legendBar: "MOY",
+      },
+      {
+        valueBar: [
+          {
+            percentage: 56,
+            info: {
+              name: "hi",
+            },
+          },
+          {
+            percentage: 29,
+            info: {
+              name: "hi",
+            },
+          },
+        ],
+        legendBar: "EOY",
+      },
+    ],
+    growth: 100,
+  },
+  {
+    legendGroup: "Label Of Group Tinh",
+    valueGroup: [
+      {
+        valueBar: [
+          {
+            percentage: 98,
+            info: {
+              name: "hi",
+            },
+          },
+          {
+            percentage: 20,
+            info: {
+              name: "hi",
+            },
+          },
+        ],
+        legendBar: "Bar",
+      },
+      {
+        valueBar: [
+          {
+            percentage: 10,
+            info: {
+              name: "hi",
+            },
+          },
+          {
+            percentage: 40,
+            info: {
+              name: "hi",
+            },
+          },
+        ],
+        legendBar: "Bar",
+      },
+    ],
+    growth: -100,
+  },
+  {
+    legendGroup: "Label Of Group Tinh",
+    valueGroup: [
+      {
+        valueBar: [
+          {
+            percentage: 98,
+            info: {
+              name: "hi",
+            },
+          },
+          {
+            percentage: 20,
+            info: {
+              name: "hi",
+            },
+          },
+        ],
+        legendBar: "Bar",
+      },
+      {
+        valueBar: [
+          {
+            percentage: 10,
+            info: {
+              name: "hi",
+            },
+          },
+          {
+            percentage: 40,
+            info: {
+              name: "hi",
+            },
+          },
+        ],
+        legendBar: "Bar",
+      },
+    ],
+    growth: 30,
+  },
+];

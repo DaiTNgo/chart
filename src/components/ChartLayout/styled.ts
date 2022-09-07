@@ -30,7 +30,6 @@ const LineBottom = styled.line.attrs((props: { y: number }) => ({
   y2: props.y,
 }))`
   stroke: #808285;
-  stroke-width: 2;
 `;
 
 const ChartData = styled.div`

@@ -38,8 +38,6 @@ function GroupStackChart({
   componentLabelBar: ComponentBar,
   componentLabelGroup: ComponentGroup,
 }: Props) {
-  console.log("=> :::: data ::::", data);
-
   const { numOfStack, numOfGroup, numOfBar } = getNumOfValue(data);
 
   const calcX = (_groupIdx: number, _barIdx: number) => {
@@ -117,11 +115,12 @@ function GroupStackChart({
 
       const widthGroup = widthForLabelGroup
         ? widthForLabelGroup
-        : widthBar * numOfBar;
+        : widthBar * numOfBar + spacingBetweenChart / 2;
       const leftGroup =
         startSpacing +
         widthBar * numOfBar * groupIdx +
         spacingBetweenChart * groupIdx;
+
       const labelItemGroup = getEleLabelGroup(
         widthGroup,
         legendGroup,
@@ -132,7 +131,8 @@ function GroupStackChart({
       let yMin = 99999999;
 
       for (let barIdx = 0; barIdx < numOfBar; barIdx++) {
-        let y = 320;
+        const MAX_HEIGHT_SVG = 320;
+        let y = MAX_HEIGHT_SVG;
         const x = calcX(groupIdx, barIdx);
         const barItem = valueGroup[barIdx];
         const { valueBar, legendBar } = barItem;
