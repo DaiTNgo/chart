@@ -103,7 +103,7 @@ function GroupStackChart({
       />
     );
   };
-
+  const arrArrow: JSX.Element[] = [];
   const getChart = (_data: TData[]) => {
     const charts: JSX.Element[] = [];
     const labelBars: JSX.Element[] = [];
@@ -180,7 +180,7 @@ function GroupStackChart({
 
       if (isShowGrowth && growth !== undefined) {
         const arrow = getEleArrow(growth, yMin, groupIdx);
-        charts.push(arrow);
+        arrArrow.push(arrow);
       }
     }
     return { charts, labelBars, labelGroups };
@@ -194,6 +194,7 @@ function GroupStackChart({
       numOfStack={numOfStack}
       labelGroup={labelGroups}
       labelBar={labelBars}
+      arrow={arrArrow}
       title={title}
     >
       {charts}

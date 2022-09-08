@@ -33,65 +33,65 @@ function App() {
         border: "1px solid black",
       }}
     >
-      <p>_groupStackData</p>
-      <GroupStackChart
-        data={parseAllClassesGrowth(_allClassesGrowth)}
-        startSpacing={60}
-        spacingBetweenChart={20}
-        title={"Domain Score"}
-        isShowGrowth
-        isShowPopoverGrowth
-        isShowPopoverBar={false}
-      />
-      <p>_allClassesTestScoreClone</p>
-      <GroupStackChart
-        data={parseAllClassesTestScore(_allClassesTestScore)}
-        title={"_allClassesTestScoreClone"}
-        spacingBetweenChart={50}
-        startSpacing={50}
-        strokeWidth={2}
-        isShowPopoverBar
-      />
+      {/*<p>_groupStackData</p>*/}
+      {/*<GroupStackChart*/}
+      {/*  data={parseAllClassesGrowth(_allClassesGrowth)}*/}
+      {/*  startSpacing={60}*/}
+      {/*  spacingBetweenChart={20}*/}
+      {/*  title={"Domain Score"}*/}
+      {/*  isShowGrowth*/}
+      {/*  isShowPopoverGrowth*/}
+      {/*  isShowPopoverBar={false}*/}
+      {/*/>*/}
+      {/*<p>_allClassesTestScoreClone</p>*/}
+      {/*<GroupStackChart*/}
+      {/*  data={parseAllClassesTestScore(_allClassesTestScore)}*/}
+      {/*  title={"_allClassesTestScoreClone"}*/}
+      {/*  spacingBetweenChart={50}*/}
+      {/*  startSpacing={50}*/}
+      {/*  strokeWidth={2}*/}
+      {/*  isShowPopoverBar*/}
+      {/*/>*/}
 
-      <GroupStackChart
-        data={parseAllClassesTestScore(allClassAOC)}
-        title={"_allClassesTestScoreClone"}
-        spacingBetweenChart={50}
-        startSpacing={50}
-        strokeWidth={2}
-        isShowPopoverBar
-      />
-      <p>_oneClassAllStudentsTestScoreClone</p>
-      <GroupStackChart
-        data={parseOneClassAllStudentsTestScore(_oneClassAllStudentsTestScore)}
-        title={"_oneClassAllStudentsTestScoreClone"}
-        spacingBetweenChart={50}
-        startSpacing={50}
-        isShowPopoverBar
-      />
-      <p>afadsf</p>
-      {console.log(parseOneClassAllStudentsTestScore(oneClassAllStudents))}
-      <GroupStackChart
-        data={parseOneClassAllStudentsTestScore(oneClassAllStudents)}
-        title={"_oneClassAllStudentsTestScoreClone"}
-        spacingBetweenChart={50}
-        startSpacing={50}
-        isShowPopoverBar
-      />
-      <p>afadsf</p>
-      <p>_oneClassOneStudentTestScoreClone</p>
-      <GroupStackChart
-        data={parseOneClassOneStudentTestScore(_oneClassOneStudentTestScore)}
-        title={"_oneClassOneStudentTestScoreClone"}
-        spacingBetweenChart={100}
-        startSpacing={50}
-        isShowPopoverBar={false}
-        strokeWidth={5}
-        widthForLabelGroup={130}
-        componentLabelGroup={Div}
-      />
+      {/*<GroupStackChart*/}
+      {/*  data={parseAllClassesTestScore(allClassAOC)}*/}
+      {/*  title={"_allClassesTestScoreClone"}*/}
+      {/*  spacingBetweenChart={50}*/}
+      {/*  startSpacing={50}*/}
+      {/*  strokeWidth={2}*/}
+      {/*  isShowPopoverBar*/}
+      {/*/>*/}
+      {/*<p>_oneClassAllStudentsTestScoreClone</p>*/}
+      {/*<GroupStackChart*/}
+      {/*  data={parseOneClassAllStudentsTestScore(_oneClassAllStudentsTestScore)}*/}
+      {/*  title={"_oneClassAllStudentsTestScoreClone"}*/}
+      {/*  spacingBetweenChart={50}*/}
+      {/*  startSpacing={50}*/}
+      {/*  isShowPopoverBar*/}
+      {/*/>*/}
+      {/*<p>afadsf</p>*/}
+      {/*{console.log(parseOneClassAllStudentsTestScore(oneClassAllStudents))}*/}
+      {/*<GroupStackChart*/}
+      {/*  data={parseOneClassAllStudentsTestScore(oneClassAllStudents)}*/}
+      {/*  title={"_oneClassAllStudentsTestScoreClone"}*/}
+      {/*  spacingBetweenChart={50}*/}
+      {/*  startSpacing={50}*/}
+      {/*  isShowPopoverBar*/}
+      {/*/>*/}
+      {/*<p>afadsf</p>*/}
+      {/*<p>_oneClassOneStudentTestScoreClone</p>*/}
+      {/*<GroupStackChart*/}
+      {/*  data={parseOneClassOneStudentTestScore(_oneClassOneStudentTestScore)}*/}
+      {/*  title={"_oneClassOneStudentTestScoreClone"}*/}
+      {/*  spacingBetweenChart={100}*/}
+      {/*  startSpacing={50}*/}
+      {/*  isShowPopoverBar={false}*/}
+      {/*  strokeWidth={5}*/}
+      {/*  widthForLabelGroup={130}*/}
+      {/*  componentLabelGroup={Div}*/}
+      {/*/>*/}
       <p>Growth Chart One Class ALl Studen Growth Chart</p>
-      <GrowthChart data={_oneClassAllStudentsGrowth} title={"Domain Scores"} />
+      {/*<GrowthChart data={_oneClassAllStudentsGrowth} title={"Domain Scores"} />*/}
 
       <GroupStackChart
         data={parseOneClassOneStudent(_oneClassOneStudent)}
@@ -104,17 +104,17 @@ function App() {
         widthForLabelGroup={130}
         componentLabelGroup={Div}
       />
-      <GroupStackChart
-        data={parseDataTam(_dataOfTam)}
-        title={"_oneClassOneStudentTestScoreClone"}
-        spacingBetweenChart={100}
-        startSpacing={50}
-        strokeWidth={5}
-        isShowGrowth
-        isShowPopoverGrowth
-        widthForLabelGroup={130}
-        componentLabelGroup={Div}
-      />
+      {/*<GroupStackChart*/}
+      {/*  data={parseDataTam(_dataOfTam)}*/}
+      {/*  title={"_oneClassOneStudentTestScoreClone"}*/}
+      {/*  spacingBetweenChart={100}*/}
+      {/*  startSpacing={50}*/}
+      {/*  strokeWidth={5}*/}
+      {/*  isShowGrowth*/}
+      {/*  isShowPopoverGrowth*/}
+      {/*  widthForLabelGroup={130}*/}
+      {/*  componentLabelGroup={Div}*/}
+      {/*/>*/}
     </div>
   );
 }

@@ -10,6 +10,7 @@ type Props = {
   widthChart?: number;
   // render line and percentage: 1 => 100%; 5 => 500%
   numOfStack?: number;
+  arrow: any[];
 };
 function ChartLayout({
   numOfStack = 1,
@@ -19,6 +20,7 @@ function ChartLayout({
   widthChart,
   labelGroup,
   title = "DEFAULT TITLE",
+  arrow,
 }: Props) {
   const renderAxis = (_isXAxis: boolean) => {
     const PERCENT = numOfStack * 100;
@@ -66,6 +68,7 @@ function ChartLayout({
               <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
               {children}
             </S.Svg>
+            {arrow && arrow}
             {labelBar && labelBar}
             {labelGroup && labelGroup}
           </S.ChartWrapper>
