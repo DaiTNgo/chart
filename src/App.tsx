@@ -5,14 +5,18 @@ import { Children } from "react";
 import {
   parseAllClassesGrowth,
   parseAllClassesTestScore,
+  parseDataTam,
   parseOneClassAllStudentsTestScore,
+  parseOneClassOneStudent,
   parseOneClassOneStudentTestScore,
 } from "./components/parseData";
 import {
   _allClassesGrowth,
   _allClassesTestScore,
+  _dataOfTam,
   _oneClassAllStudentsGrowth,
   _oneClassAllStudentsTestScore,
+  _oneClassOneStudent,
   _oneClassOneStudentTestScore,
   allClassAOC,
   oneClassAllStudents,
@@ -88,6 +92,29 @@ function App() {
       />
       <p>Growth Chart One Class ALl Studen Growth Chart</p>
       <GrowthChart data={_oneClassAllStudentsGrowth} title={"Domain Scores"} />
+
+      <GroupStackChart
+        data={parseOneClassOneStudent(_oneClassOneStudent)}
+        title={"_oneClassOneStudentTestScoreClone"}
+        spacingBetweenChart={100}
+        startSpacing={50}
+        strokeWidth={5}
+        isShowGrowth
+        isShowPopoverGrowth
+        widthForLabelGroup={130}
+        componentLabelGroup={Div}
+      />
+      <GroupStackChart
+        data={parseDataTam(_dataOfTam)}
+        title={"_oneClassOneStudentTestScoreClone"}
+        spacingBetweenChart={100}
+        startSpacing={50}
+        strokeWidth={5}
+        isShowGrowth
+        isShowPopoverGrowth
+        widthForLabelGroup={130}
+        componentLabelGroup={Div}
+      />
     </div>
   );
 }

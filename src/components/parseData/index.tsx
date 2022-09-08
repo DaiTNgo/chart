@@ -2,6 +2,7 @@ import PopoverBar from "./component/PopoverBar";
 import * as S from "./component/PopoverBar/styled";
 import React from "react";
 import { TData } from "../GroupStackChart/types";
+import { _dataOfTam, _oneClassOneStudent } from "./mock-data";
 export const typeProficient = new Map([
   ["Proficient", "#88CA22"],
   ["Partially Proficient", "#F5C839"],
@@ -182,10 +183,105 @@ function parseAllClassesTestScore(data: any) {
 
   return _allClassesTestScoreClone;
 }
+function parseOneClassOneStudent(data: typeof _oneClassOneStudent) {
+  const arrOneClassOneStudent: TData[] = [];
+  data.forEach((item: any) => {
+    item.domainScores.forEach((domain: any) => {
+      arrOneClassOneStudent.push({
+        legendGroup: domain.domainName,
+        valueGroup: [
+          {
+            valueBar: [
+              {
+                percentage: domain.percentageScore,
+                info: {
+                  ...domain,
+                  fillColor:
+                    TypeProficient[
+                      domain.proficiencyLevel as keyof typeof TypeProficient
+                    ],
+                },
+              },
+            ],
+            legendBar: "hihi",
+          },
+          {
+            valueBar: [
+              {
+                percentage: domain.toPercentageScore,
+                info: {
+                  ...domain,
+                  fillColor:
+                    TypeProficient[
+                      domain.toProficiencyLevel as keyof typeof TypeProficient
+                    ],
+                },
+              },
+            ],
+            legendBar: "haha",
+          },
+        ],
+        growth: {
+          value: domain.growthPercentage,
+          title: <p>{domain.domainName}</p>,
+          content: <p>Growth: {domain.growthPercentage}%</p>,
+        },
+      });
+    });
+  });
 
+  return arrOneClassOneStudent;
+}
+
+function parseDataTam(data: typeof _dataOfTam) {
+  return data.map((item) => {
+    return {
+      legendGroup: item.displayName,
+      valueGroup: [
+        {
+          valueBar: [
+            {
+              percentage: item.score,
+              info: {
+                ...item,
+                // fillColor:
+                //   TypeProficient[
+                //     item.proficiencyLevel as keyof typeof TypeProficient
+                //   ],
+              },
+            },
+          ],
+          legendBar: "hihi",
+        },
+        {
+          valueBar: [
+            {
+              percentage: item.toScore,
+              info: {
+                ...item,
+                fillColor:
+                  TypeProficient[
+                    item.toProficiencyLevel as keyof typeof TypeProficient
+                  ],
+              },
+            },
+          ],
+          legendBar: "haha",
+        },
+      ],
+      growth: {
+        value: item.toScore - item.score,
+        title: <p>title</p>,
+        content: <p>Growth: %</p>,
+      },
+    };
+  });
+}
 export {
   parseAllClassesGrowth,
   parseOneClassAllStudentsTestScore,
   parseOneClassOneStudentTestScore,
   parseAllClassesTestScore,
+  parseOneClassOneStudent,
+  parseDataTam,
 };

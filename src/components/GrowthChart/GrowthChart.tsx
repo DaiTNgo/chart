@@ -154,8 +154,6 @@ function Growth({
         }: { domainScores: any[]; displayName: string },
         group: number
       ) => {
-        console.log("=> :::: rest ::::", rest);
-
         return domainScores.map((item: any, index: number) => {
           const numberOfElementBefore = calcNumberOfElementBefore(data, group);
 
