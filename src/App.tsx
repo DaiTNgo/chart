@@ -11,9 +11,13 @@ import {
 import {
   _allClassesGrowth,
   _allClassesTestScore,
+  _oneClassAllStudentsGrowth,
   _oneClassAllStudentsTestScore,
   _oneClassOneStudentTestScore,
+  allClassAOC,
+  oneClassAllStudents,
 } from "./components/parseData/mock-data";
+import GrowthChart from "./components/GrowthChart";
 
 function App() {
   return (
@@ -44,6 +48,15 @@ function App() {
         strokeWidth={2}
         isShowPopoverBar
       />
+
+      <GroupStackChart
+        data={parseAllClassesTestScore(allClassAOC)}
+        title={"_allClassesTestScoreClone"}
+        spacingBetweenChart={50}
+        startSpacing={50}
+        strokeWidth={2}
+        isShowPopoverBar
+      />
       <p>_oneClassAllStudentsTestScoreClone</p>
       <GroupStackChart
         data={parseOneClassAllStudentsTestScore(_oneClassAllStudentsTestScore)}
@@ -52,6 +65,16 @@ function App() {
         startSpacing={50}
         isShowPopoverBar
       />
+      <p>afadsf</p>
+      {console.log(parseOneClassAllStudentsTestScore(oneClassAllStudents))}
+      <GroupStackChart
+        data={parseOneClassAllStudentsTestScore(oneClassAllStudents)}
+        title={"_oneClassAllStudentsTestScoreClone"}
+        spacingBetweenChart={50}
+        startSpacing={50}
+        isShowPopoverBar
+      />
+      <p>afadsf</p>
       <p>_oneClassOneStudentTestScoreClone</p>
       <GroupStackChart
         data={parseOneClassOneStudentTestScore(_oneClassOneStudentTestScore)}
@@ -63,6 +86,8 @@ function App() {
         widthForLabelGroup={130}
         componentLabelGroup={Div}
       />
+      <p>Growth Chart One Class ALl Studen Growth Chart</p>
+      <GrowthChart data={_oneClassAllStudentsGrowth} title={"Domain Scores"} />
     </div>
   );
 }
