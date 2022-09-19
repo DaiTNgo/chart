@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./styled";
+import { HEIGHT_SVG_PX, Y_END_SVG_PX } from "../../helper/constants";
 
 type Props = {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ type Props = {
   widthChart?: number;
   // render line and percentage: 1 => 100%; 5 => 500%
   numOfStack?: number;
+  arrow?: any;
 };
 function ChartLayout({
   numOfStack = 1,
@@ -19,11 +21,10 @@ function ChartLayout({
   widthChart,
   labelGroup,
   title = "DEFAULT TITLE",
+  arrow,
 }: Props) {
   const renderAxis = (_isXAxis: boolean) => {
     const PERCENT = numOfStack * 100;
-    const HEIGHT_SVG_PX = 300;
-    const Y_END_SVG_PX = 20;
 
     let DISTANCE_PERCENTAGE = 20;
     if (numOfStack > 1) {
@@ -66,10 +67,19 @@ function ChartLayout({
               <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
               {children}
             </S.Svg>
+            {/*<div>{arrow && arrow}</div>*/}
             {labelBar && labelBar}
             {labelGroup && labelGroup}
           </S.ChartWrapper>
         </S.ChartData>
+        <div
+          className="arrow"
+          style={{
+            width: widthChart,
+          }}
+        >
+          {arrow && arrow}
+        </div>
       </div>
     </S.ChartContainer>
   );

@@ -108,7 +108,7 @@ function GroupStackChart({
     const charts: JSX.Element[] = [];
     const labelBars: JSX.Element[] = [];
     const labelGroups: JSX.Element[] = [];
-
+    const arrows = [];
     for (let groupIdx = 0; groupIdx < numOfGroup; groupIdx++) {
       const groupItem = _data[groupIdx];
       const { valueGroup, legendGroup, growth } = groupItem;
@@ -180,12 +180,12 @@ function GroupStackChart({
 
       if (isShowGrowth && growth !== undefined) {
         const arrow = getEleArrow(growth, yMin, groupIdx);
-        charts.push(arrow);
+        arrows.push(arrow);
       }
     }
-    return { charts, labelBars, labelGroups };
+    return { charts, labelBars, labelGroups, arrows };
   };
-  const { charts, labelBars, labelGroups } = getChart(data);
+  const { charts, labelBars, labelGroups, arrows } = getChart(data);
 
   return (
     <ChartLayout
@@ -195,6 +195,7 @@ function GroupStackChart({
       labelGroup={labelGroups}
       labelBar={labelBars}
       title={title}
+      arrow={arrows}
     >
       {charts}
     </ChartLayout>

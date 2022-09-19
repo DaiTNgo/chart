@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Svg = styled.svg<{ width: number | undefined }>`
   min-width: 100%;
   width: ${(prop) => prop.width}px;
-  height: 360px;
+  height: 400px;
 `;
 
 const Line = styled.line.attrs((props: { y: number }) => ({
@@ -83,6 +83,11 @@ const ChartContainer = styled.div`
 
   .score-per {
     margin-top: 12px;
+  }
+  .arrow {
+    position: absolute;
+    top: 0;
+    left: var(--left-chart-width);
   }
 `;
 export { Svg, Line, LineBottom, ChartData, ChartWrapper, ChartContainer, Text };
