@@ -1,6 +1,5 @@
 import React from "react";
 import * as S from "./styled";
-import { HEIGHT_SVG_PX, Y_END_SVG_PX } from "../../helper/constants";
 
 type Props = {
   children: React.ReactNode;
@@ -67,7 +66,6 @@ function ChartLayout({
               <S.LineBottom y={320} strokeWidth={strokeOfXAxisChart} />
               {children}
             </S.Svg>
-            {/*<div>{arrow && arrow}</div>*/}
             {labelBar && labelBar}
             {labelGroup && labelGroup}
           </S.ChartWrapper>
