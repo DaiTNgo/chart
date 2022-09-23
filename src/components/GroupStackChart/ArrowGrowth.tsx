@@ -43,7 +43,17 @@ function ArrowGrowth({ x, y, growth, ...props }: Props) {
 
   return (
     <PopoverFA {...props}>
-      <svg x={x} y={y} width={80} height={80}>
+      <svg
+        x={x}
+        y={y}
+        width={80}
+        height={80}
+        style={{
+          position: "absolute",
+          left: x,
+          top: y,
+        }}
+      >
         <g>
           <polygon points={points} fill={"#3197C2"} />
           <text

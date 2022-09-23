@@ -24,13 +24,16 @@ import {
 import GrowthChart from "./components/GrowthChart";
 
 function App() {
+  const a = parseOneClassOneStudent(_oneClassOneStudent);
   return (
     <div
-      className="App"
+      // className="App"
       style={{
         minHeight: "100vh",
         height: "1000px",
         border: "1px solid black",
+        width: "100vw",
+        marginTop: "100px",
       }}
     >
       {/*<p>_groupStackData</p>*/}
@@ -90,11 +93,10 @@ function App() {
       {/*  widthForLabelGroup={130}*/}
       {/*  componentLabelGroup={Div}*/}
       {/*/>*/}
-      <p>Growth Chart One Class ALl Studen Growth Chart</p>
       {/*<GrowthChart data={_oneClassAllStudentsGrowth} title={"Domain Scores"} />*/}
 
       <GroupStackChart
-        data={parseOneClassOneStudent(_oneClassOneStudent)}
+        data={[...a, ...a, ...a, ...a]}
         title={"_oneClassOneStudentTestScoreClone"}
         spacingBetweenChart={100}
         startSpacing={50}

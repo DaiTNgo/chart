@@ -95,6 +95,8 @@ function GroupStackChart({
       <ArrowGrowth
         isPopover={isShowPopoverGrowth}
         key={uniqueId(`${x}`)}
+        // x={x + HEIGHT_DEFAULT_SVG_ARROW / 4}
+        // y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
         x={x}
         y={yMin - HEIGHT_DEFAULT_SVG_ARROW}
         growth={value}
@@ -195,7 +197,7 @@ function GroupStackChart({
       labelGroup={labelGroups}
       labelBar={labelBars}
       title={title}
-      arrow={arrows}
+      arrows={arrows}
     >
       {charts}
     </ChartLayout>

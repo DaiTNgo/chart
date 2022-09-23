@@ -65,7 +65,11 @@ function parseOneClassAllStudentsTestScore(data: any) {
             description={item.domainName}
             proficiencyLevel={item.proficiencyLevel}
             score={item.percentageScore}
-            color={TypeProficient[item.proficiencyLevel]}
+            color={
+              TypeProficient[
+                item.proficiencyLevel as keyof typeof TypeProficient
+              ]
+            }
           />
         ),
         info: item,
@@ -171,7 +175,11 @@ function parseAllClassesTestScore(data: any) {
           <PopoverBar
             teacher={data.teacher.camelFirstLastName}
             description={item.domainName}
-            color={TypeProficient[item.proficiencyLevel]}
+            color={
+              TypeProficient[
+                item.proficiencyLevel as keyof typeof TypeProficient
+              ]
+            }
             proficiencyLevel={item.proficiencyLevel}
             score={item.percentageScore}
           />
